@@ -26,15 +26,15 @@ xhr.send()
 let htmlCreator = (e) => {
     let tweetStr = ""
     tweetStr += `
-                    <h2>${e.pk}</h2> 
-                    <p>${e.content}</p> 
-                    <p><button onClick="likeBtn(${e.pk})" type="button" class="btn btn-light">like</button></p>
-                    <img src="{{ ${e.img.url} }}" alt=""> <br>
+        <h2>${e.pk}</h2> 
+        <p>${e.content}</p> 
+        <p><button onClick="likeBtn(${e.pk}, ${e.like})" type="button" class="btn btn-light">like ${e.like}</button></p>
+        <img src="{{ ${e.img.url} }}" alt=""> <br>
                 `
     return tweetStr
 }
 
-let likeBtn = (pk) => {
+let likeBtn = (pk, like) => {
     // got pk of tweet
     console.log(pk)
 }

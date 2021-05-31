@@ -1,0 +1,13 @@
+{% load static %}
+<div class="container mt-3">
+    {% if messages %}
+        {% for element in messages %}
+            <div class="alert alert-{{ element.tags }} alert-dismissible fade show" role="alert">
+                {{ element }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
