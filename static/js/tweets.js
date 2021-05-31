@@ -26,10 +26,13 @@ xhr.send()
 let htmlCreator = (e) => {
     let tweetStr = ""
     tweetStr += `
-        <h2>${e.pk}</h2> 
-        <p>${e.content}</p> 
-        <p><button onClick="likeBtn(${e.pk}, ${e.like})" type="button" class="btn btn-light">like ${e.like}</button></p>
-        <img src="{{ ${e.img.url} }}" alt=""> <br>
+        <div class="jumbotron" style="background-color: rgba(234,234,234,0.28)">
+            <h2>${e.pk}</h2> 
+            <p>${e.content}</p> 
+            <p><button onClick="likeBtn(${e.pk}, ${e.like})" type="button" class="btn btn-light">like ${e.like}</button></p>
+            <img src="{{ ${e.img.url} }}" alt=""> <br>
+        </div>
+        
                 `
     return tweetStr
 }

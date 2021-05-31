@@ -15,6 +15,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">Link</a>
             </li>
+            {% comment %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
@@ -30,10 +31,29 @@
             <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
             </li>
+            {% endcomment %}
+
         </ul>
+
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+
+            {% if user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link " style="color: #f5aeae" href="{% url 'admin:index' %}" tabindex="-1"
+                       aria-disabled="true">Admin</a>
+                </li>
+            {% endif %}
+        </ul>
+
+        {% comment %}
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
+        {% endcomment %}
+
     </div>
 </nav>
