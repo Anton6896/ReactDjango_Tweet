@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+    <div>
+        <h3> tweets</h3>
+        <div id="tweets">
+            <p>Loading .. </p>
+
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static "js/tweets.js" %}"></script>
+{% endblock %}
