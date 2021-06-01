@@ -21,11 +21,15 @@
 <body>
 
 {% comment %} nav bar {% endcomment %}
-{% include 'navbar.html' %}
+<div class="mb-auto">
+    {% include 'navbar.html' %}
+</div>
 {# django mesages #}
+<div class="mt-auto">
 {% include 'alerts.html' %}
+</div>
 {% comment %} main content {% endcomment %}
-<div class="container-fluid">
+<div class="container-fluid mt-auto">
     {% block main %}{% endblock %}
 </div>
 

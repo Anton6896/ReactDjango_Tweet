@@ -3,10 +3,24 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from .models import Tweet
 from django.core.exceptions import ObjectDoesNotExist
+from .forms import CreateTweetForm
 
 
 def home_view(request):
     return render(request, 'tweet/home.html')
+
+
+def crete_view(request, *args, **kwargs):
+    form = CreateTweetForm(request.POST or None)
+    if form.is_valid():
+        form_obj = form.save(commit=False)
+        form_obj.save()
+
+    form = CreateTweetForm()
+    context = {
+        "form": form
+    }
+    return render(request, 'tweet/create_tweet.html', context)
 
 
 def list_view(request, *args, **kwargs):
@@ -20,6 +34,7 @@ def list_view(request, *args, **kwargs):
             "data": list_of_tweets
         }
         return JsonResponse(data, status=200)
+
     except:
         return JsonResponse({"msg": "not found"}, status=404)
 
