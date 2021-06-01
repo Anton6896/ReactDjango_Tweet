@@ -4,19 +4,29 @@ from django.shortcuts import render
 from .models import Tweet
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import CreateTweetForm
+from django.contrib import messages
+from django.shortcuts import redirect
 
 
 def home_view(request):
-    return render(request, 'tweet/home.html')
+    form = CreateTweetForm()
+    return render(request, 'tweet/home.html', {'form': form})
 
 
 def crete_view(request, *args, **kwargs):
     form = CreateTweetForm(request.POST or None)
-    if form.is_valid():
-        form_obj = form.save(commit=False)
-        form_obj.save()
 
+    # get data from hidden field at home view and redirect user after submitting form
+    next_url = request.POST.get('next') or None
+    if form.is_valid():
+        form.save()
+        if next_url:
+            messages.success(request, f'tweet created')
+            return redirect(next_url)
+
+    # else
     form = CreateTweetForm()
+
     context = {
         "form": form
     }
@@ -25,7 +35,7 @@ def crete_view(request, *args, **kwargs):
 
 def list_view(request, *args, **kwargs):
     try:
-        qs = Tweet.objects.all()
+        qs = Tweet.objects.all().order_by('-timestamp')
         list_of_tweets = [{"pk": x.pk,
                            "content": x.content,
                            "img": x.image.url,

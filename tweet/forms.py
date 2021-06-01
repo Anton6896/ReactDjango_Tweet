@@ -13,10 +13,11 @@ class CreateTweetForm(forms.ModelForm):
 
     class Meta:
         model = Tweet
-        fields = "__all__"
+        fields = ("content", )
 
     def clean_content(self):
         content = self.cleaned_data.get('content')
         if len(content) > MAX_TWEET_LENGTH:
             raise forms.ValidationError("this is to big tweet size")
+
         return content

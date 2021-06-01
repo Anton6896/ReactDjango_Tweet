@@ -2,12 +2,19 @@
 <div class="container mt-3">
     {% if messages %}
         {% for element in messages %}
-            <div class="alert alert-{{ element.tags }} alert-dismissible fade show" role="alert">
+            <div id="alert_box" class="alert alert-{{ element.tags }} alert-dismissible fade show" role="alert">
                 {{ element }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+
+            <script>
+                let elem = document.getElementById("alert_box")
+                setTimeout(() => {
+                    elem.style.display = "none"
+                }, 2000)
+            </script>
         {% endfor %}
     {% endif %}
 </div>

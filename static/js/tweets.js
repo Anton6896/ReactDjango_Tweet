@@ -24,14 +24,14 @@ let htmlCreator = (dataList) => {
     dataList.forEach(e => {
 
         tweetStr += `
-        <div class="jumbotron" style="background-color: rgba(234,234,234,0.28)">
-            <h2>${e.pk}</h2> 
-            <p>${e.content}</p> 
-            <p><button onClick="likeBtn(${e.pk}, ${e.like})" type="button" class="btn btn-light">like ${e.like}</button></p>
-            <p> image : ${e.img.url} ,url not working</p>
-            <img src="{{ ${e.img.url} }}" alt=""> <br>
-        </div>
-                `
+            <div class="jumbotron" style="background-color: rgba(234,234,234,0.28)">
+                <h2>${e.pk}</h2> 
+                <p>${e.content}</p> 
+                <p><button onClick="likeBtn(${e.pk}, ${e.like})" type="button" class="btn btn-success">like ${e.like}</button></p>
+                <p> image : ${e.img.url} ,url not working</p>
+                <img src="{{ ${e.img.url} }}" alt="">
+            </div>
+                    `
     })
     return tweetStr
 }
