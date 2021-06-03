@@ -4,18 +4,24 @@ from django.shortcuts import render
 from django.utils.http import is_safe_url
 from django.conf import settings
 from .models import Tweet
-from django.core.exceptions import ObjectDoesNotExist
 from .forms import CreateTweetForm
 from django.contrib import messages
 from django.shortcuts import redirect
 
 
 def home_view(request):
+    """
+    home view that have list of tweets and form for creating new tweet
+    list and form handled by js requests
+    """
     form = CreateTweetForm()
     return render(request, 'tweet/home.html', {'form': form})
 
 
 def crete_view(request, *args, **kwargs):
+    """
+    creating new tweet thru the ajax and js
+    """
     form = CreateTweetForm(request.POST or None)
 
     # get data from hidden field at tweet creation
@@ -23,8 +29,12 @@ def crete_view(request, *args, **kwargs):
     next_url = request.POST.get('next') or None
     if form.is_valid():
         form.save()
-        if next_url and is_safe_url(next_url, settings.ALLOWED_HOSTS):
+
+        if request.is_ajax():
             messages.success(request, f'tweet created')
+            return JsonResponse({"msg": 'created'}, status=201)
+
+        if next_url and is_safe_url(next_url, settings.ALLOWED_HOSTS):
             return redirect(next_url)
 
     # else
@@ -36,8 +46,11 @@ def crete_view(request, *args, **kwargs):
     return render(request, 'tweet/create_tweet.html', context)
 
 
-# return list of js objects with all tweet data
 def list_view(request, *args, **kwargs):
+    """
+    get qs of all tweets and return as js list object
+    or return error message
+    """
     try:
         qs = Tweet.objects.all().order_by('-timestamp')
         list_of_tweets = [{"pk": x.pk,
@@ -54,6 +67,9 @@ def list_view(request, *args, **kwargs):
 
 
 def detail_view(request, pk):
+    """
+    get tweet by pk
+    """
     status = None
     data = {
         "pk": pk,
@@ -65,7 +81,7 @@ def detail_view(request, pk):
         data['img'] = tweet_obj.image.url
         status = 200
 
-    except ObjectDoesNotExist:
+    except Tweet.DoesNotExist:
         data['msg'] = 'not found'
         status = 404
 
