@@ -6,9 +6,9 @@ console.log("-- loaded at home page start ")
  * @param tweetsEl  list of all tweets at the page
  */
 let loadTweets = (tweetsEl) => {
-    const xhr = new XMLHttpRequest()
-    const method = "GET"
-    const url = "list"
+    let xhr = new XMLHttpRequest()
+    let method = "GET"
+    let url = "list"
     xhr.responseType = "json"
 
     xhr.open(method, url)
@@ -74,8 +74,32 @@ tweetForm.addEventListener("submit", (e) => {
     xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
     xhr.onload = () => {
-        console.log(xhr.response)
+        createAlert("tweet created", "success", xhr.status)
         loadTweets(tweetList)
     }
     xhr.send(formData)
 })
+
+/**
+ * show alarm for message creation
+ * @param msg message to display
+ * @param type type of message
+ * @param status ajax request status
+ */
+let createAlert = (msg, type, status) => {
+    let alertBox = document.getElementById("alert_box")
+    alertBox.style.display = 'block'
+
+    if (status >= 200 && status <= 300) {
+        // if all ok show alert for that for 2 sec
+        alertBox.innerHTML = `
+        <div class="alert alert-success" role="alert">
+            ${msg}
+        </div>
+    `
+    }
+
+    setTimeout(() => {
+        alertBox.style.display = 'none'
+    }, 2000)
+}

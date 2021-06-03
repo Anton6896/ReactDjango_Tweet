@@ -31,7 +31,6 @@ def crete_view(request, *args, **kwargs):
         form.save()
 
         if request.is_ajax():
-            messages.success(request, f'tweet created')
             return JsonResponse({"msg": 'created'}, status=201)
 
         if next_url and is_safe_url(next_url, settings.ALLOWED_HOSTS):
@@ -53,14 +52,8 @@ def list_view(request, *args, **kwargs):
     """
     try:
         qs = Tweet.objects.all().order_by('-timestamp')
-        list_of_tweets = [{"pk": x.pk,
-                           "content": x.content,
-                           "img": x.image.url,
-                           "like": random.randint(2, 100)} for x in qs]
-        data = {
-            "data": list_of_tweets
-        }
-        return JsonResponse(data, status=200)
+        list_of_tweets = [x.serializer() for x in qs]
+        return JsonResponse({"data": list_of_tweets}, status=200)
 
     except Tweet.DoesNotExist:
         return JsonResponse({"msg": "not found"}, status=404)

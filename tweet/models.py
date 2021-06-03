@@ -1,3 +1,5 @@
+import random
+
 from django.db import models
 from tweetRoot.utils.root_utils import customer_image_file_path
 from PIL import Image
@@ -26,3 +28,12 @@ class Tweet(models.Model):
                 img.save(self.image.path)
         except IOError:
             print(f'save problem with file in Tweet model')
+
+    def serializer(self):
+        # crete and return object for js
+        return {
+            "pk": self.pk,
+            "content": self.content,
+            "like": random.randint(1, 100),
+            "img": self.image.url
+        }
