@@ -1,6 +1,8 @@
 import random
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.utils.http import is_safe_url
+from django.conf import settings
 from .models import Tweet
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import CreateTweetForm
@@ -16,11 +18,12 @@ def home_view(request):
 def crete_view(request, *args, **kwargs):
     form = CreateTweetForm(request.POST or None)
 
-    # get data from hidden field at home view and redirect user after submitting form
+    # get data from hidden field at tweet creation
+    # next redirect to home page
     next_url = request.POST.get('next') or None
     if form.is_valid():
         form.save()
-        if next_url:
+        if next_url and is_safe_url(next_url, settings.ALLOWED_HOSTS):
             messages.success(request, f'tweet created')
             return redirect(next_url)
 
@@ -33,6 +36,7 @@ def crete_view(request, *args, **kwargs):
     return render(request, 'tweet/create_tweet.html', context)
 
 
+# return list of js objects with all tweet data
 def list_view(request, *args, **kwargs):
     try:
         qs = Tweet.objects.all().order_by('-timestamp')
@@ -45,7 +49,7 @@ def list_view(request, *args, **kwargs):
         }
         return JsonResponse(data, status=200)
 
-    except:
+    except Tweet.DoesNotExist:
         return JsonResponse({"msg": "not found"}, status=404)
 
 

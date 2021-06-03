@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="col col-lg-4">
-                <form action="/tweet/create" class="form" method="POST">
+                <form action="/tweet/create" class="bootstrap4" method="POST">
                     <input type="hidden" value="/tweet" name="next" />
                     {% csrf_token %}
                     {{ form|crispy }}
